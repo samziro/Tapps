@@ -110,12 +110,7 @@ export default function RootLayout({
 
         <main>{children}</main>
 
-        <footer className="text-center py-4 text-sm text-gray-600">
-          <p>
-            &copy; {new Date().getFullYear()} Tapps Broilers Enterprise. All
-            rights reserved.
-          </p>
-        </footer>
+        
       </body>
     </html>
   );
