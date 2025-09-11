@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 
+
 interface Order {
   id: string;
   customerName: string;
@@ -125,9 +126,11 @@ export default function TrackOrderPage() {
   };
 
   return (
+
     <>
     <Header/>
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+    <div className="min-h-dvh bg-gray-50 pt-24 pb-12">
+
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Track Your Order</h1>
@@ -334,7 +337,9 @@ export default function TrackOrderPage() {
         )}
       </div>
     </div>
+
     </>
     
+
   );
 }

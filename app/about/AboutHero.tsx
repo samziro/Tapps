@@ -6,7 +6,9 @@ export default function AboutHero() {
     <section 
       className="relative h-[70vh] flex items-center justify-center bg-cover bg-center"
       style={{
+
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bg.jpg')`
+
       }}
     >
       <div className="text-center text-white max-w-4xl px-6">

@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
+
     <header className="bg-white shadow-lg z-10 w-full fixed">
       <div className="max-w-7xl mx-auto px-6 ">
         <div className="flex justify-between items-center py-1">
@@ -22,6 +24,7 @@ export default function Header() {
                />
             </div>
             
+
           </Link>
 
           {/* Desktop Navigation */}

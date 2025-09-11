@@ -1,7 +1,9 @@
 
 'use client';
 
+
 import Image from "next/image";
+
 
 export default function QualityStandards() {
   const standards = [
@@ -28,12 +30,14 @@ export default function QualityStandards() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
+
             <Image
               width={400}
               height={400}
               src="/close_up.jpg"
               alt="Quality Standards"
               className="w-full object-cover object-top rounded-2xl shadow-xl"
+
             />
           </div>
           <div>

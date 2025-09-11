@@ -22,18 +22,23 @@ const geistMono = Geist_Mono({
 
 // Metadata for SEO & social sharing
 export const metadata: Metadata = {
+
   title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu | Broilers Watamu",
+
   description:
     "Tapps Broilers Enterprise delivers fresh, farm-raised broiler chickens in Watamu, Kenya. Hygienic, healthy, and affordable broilers direct from the farm.",
   keywords: [
     "Tapps Broilers",
     "Broilers Watamu",
+    "Broiler Chicken Watamu",
     "Watamu Broilers",
+    "Broiler for sell in Watamu",
     "Broilers Enterprise",
     "Fresh Broilers Watamu",
     "Fresh broiler chicken Kenya",
     "Farm-raised chicken Watamu",
     "Affordable broilers Watamu",
+
   ],
   authors: [{ name: "Tapps Broilers Enterprise" }],
   openGraph: {
@@ -44,7 +49,9 @@ export const metadata: Metadata = {
     siteName: "Tapps Broilers Enterprise",
     images: [
       {
-        url: "/broilers_close_up.jpg", // Add real image inside /public
+
+        url: "/broilers_close_up.jpg", 
+
         width: 1200,
         height: 630,
         alt: "Fresh broilers from Tapps Broilers Enterprise",
@@ -58,7 +65,10 @@ export const metadata: Metadata = {
     title: "Tapps Broilers Enterprise",
     description:
       "Order fresh broiler chicken in Watamu from Tapps Broilers Enterprise. Farm-raised, hygienic, and affordable.",
-    images: ["/broilers_close_up.jpg"],
+    creator: "@tappsbroilers",
+    images: ["/close_up.jpg"],
+
+
   },
 };
 
@@ -74,7 +84,10 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {/* Favicon (place favicon.ico or logo.png in /public) */}
+
         <link rel="icon" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        <link rel="manifest" href="/site.webmanifest" />
 
         {/* Schema.org JSON-LD for Local Business */}
         <script
@@ -96,7 +109,15 @@ export default function RootLayout({
                 postalCode: "80202",
                 addressCountry: "KE",
               },
+
               image: "/logo.jpg",
+              priceRange: "KSh 500 per broiler",
+              sameAs: [
+                "https://www.facebook.com/tappsbroilers",
+                "https://www.instagram.com/tappsbroilers",
+                "https://twitter.com/tappsbroilers",
+              ],
+
             }),
           }}
         />

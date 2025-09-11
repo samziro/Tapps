@@ -11,7 +11,7 @@ import QualityStandards from './QualityStandards';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-dvh bg-white">
       <Header />
       <AboutHero />
       <OurStory />

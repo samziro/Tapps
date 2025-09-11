@@ -20,9 +20,9 @@ export default function OrderPage() {
 
   const products = [
     { id: 'whole', name: 'Whole Broiler', price: 500, weight: '1.5-2kg' },
-    { id: 'mixed', name: 'Mixed Cuts', price: 500, weight: '1kg pack' },
-    { id: 'breast', name: 'Breast Meat', price: 600, weight: '500g pack' },
-    { id: 'thighs', name: 'Thighs & Drumsticks', price: 400, weight: '500g pack' }
+    // { id: 'mixed', name: 'Mixed Cuts', price: 500, weight: '1kg pack' },
+    // { id: 'breast', name: 'Breast Meat', price: 600, weight: '500g pack' },
+    // { id: 'thighs', name: 'Thighs & Drumsticks', price: 400, weight: '500g pack' }
   ];
 
   const selectedProductData = products.find(p => p.id === selectedProduct);
@@ -76,7 +76,9 @@ export default function OrderPage() {
 
   if (orderSubmitted) {
     return (
+
       <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+
         <div className="max-w-2xl mx-auto px-6">
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">

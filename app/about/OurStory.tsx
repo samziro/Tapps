@@ -25,7 +25,9 @@ export default function OurStory() {
             </div>
             <div className="mt-8 flex items-center space-x-6">
               <div className="text-center">
+
                 <div className="text-3xl font-bold text-green-600">20+</div>
+
                 <div className="text-sm text-gray-500">Years Experience</div>
               </div>
               <div className="text-center">
@@ -39,12 +41,14 @@ export default function OurStory() {
             </div>
           </div>
           <div className="relative">
+
             <Image
               width={400}
               height={400}
               src="/about.jpg"
               alt="Our Farm Story"
               className="w-full object-cover object-top rounded-2xl shadow-xl"
+
             />
             <div className="absolute -bottom-6 -left-6 bg-green-600 text-white p-6 rounded-xl shadow-xl">
               <div className="flex items-center space-x-3">

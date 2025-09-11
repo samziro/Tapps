@@ -1,7 +1,9 @@
 
 'use client';
 
+
 import Image from 'next/image';
+
 import Link from 'next/link';
 
 export default function TeamSection() {
@@ -19,12 +21,14 @@ export default function TeamSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
+
             <Image
               width={800}
               height={800}
               src="/team.jpg"
               alt="Our Dedicated Team"
               className="w-full object-cover object-top rounded-2xl shadow-xl"
+
             />
           </div>
           <div>

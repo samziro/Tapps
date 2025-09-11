@@ -21,7 +21,7 @@ export default function WhyChooseUs() {
     {
       icon: 'ri-truck-line',
       title: 'Fast Delivery',
-      description: 'We ensure quick delivery to maintain freshness from our farm directly to your kitchen table.'
+      description: 'We ensure quick delivery to maintain freshness from our farm directly to your kitchen table, On agreed terms.'
     },
     {
       icon: 'ri-money-dollar-circle-line',

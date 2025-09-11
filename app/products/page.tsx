@@ -43,9 +43,15 @@ export default function ProductsPage() {
       
       {/* Hero Section */}
       <section 
+<<<<<<< HEAD
         className="relative h-[75dvh] flex items-center justify-center text-white"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/hero.jpg')`,
+=======
+        className="relative h-96 flex items-center justify-center text-white"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://readdy.ai/api/search-image?query=Fresh%20broiler%20chickens%20in%20modern%20clean%20farm%20setting%20with%20natural%20lighting%2C%20healthy%20white%20broiler%20chickens%20in%20spacious%20environment%2C%20professional%20poultry%20farming%20photography%20with%20green%20fields%20and%20blue%20sky&width=1920&height=600&seq=products-hero&orientation=landscape')`,
+>>>>>>> origin/main
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
