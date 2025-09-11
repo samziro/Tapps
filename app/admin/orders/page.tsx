@@ -226,7 +226,7 @@ export default function AdminOrdersPage() {
               <h1 className="text-xl md:text-3xl md:text-center font-bold text-gray-900">Order Management</h1>
               <p className="text-gray-600 mt-2">Manage and track all customer orders - Updates in real-time</p>
             </div>
-            <div className="flex flex-col md:flex-row space-x-4">
+            <div className="flex flex-row space-x-4">
               <Link
                 href="/"
                 className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition-colors whitespace-nowrap cursor-pointer"
