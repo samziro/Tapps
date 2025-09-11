@@ -4,36 +4,95 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { createClient } from '@supabase/supabase-js';
+
+// Use environment variables for your Supabase credentials
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function AdminLoginPage() {
+  const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [credentials, setCredentials] = useState({
-    username: '',
+    name: '',
+    email: '',
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  // Login handler
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    // Simple authentication - in a real app, this would be a secure backend API
-    if (credentials.username === 'admin' && credentials.password === 'tapps2024') {
-      // Store authentication in localStorage
+    const name = credentials.name.trim();
+    const email = credentials.email.trim();
+    const password = credentials.password.trim();
+
+    const { data, error: supabaseError } = await supabase
+      .from('adminCredentials')
+      .select('*')
+      .eq('name', name)
+      .eq('email', email)
+      .eq('password', password)
+      .single();
+
+    setIsLoading(false);
+
+    if (supabaseError || !data) {
+      setError('Invalid name, email, or password. Please try again.');
+    } else {
       localStorage.setItem('adminAuth', 'true');
       localStorage.setItem('adminLoginTime', Date.now().toString());
-      
-      setTimeout(() => {
-        setIsLoading(false);
-        router.push('/admin/orders');
-      }, 1000);
+      router.push('/admin/orders');
+    }
+  };
+
+  // Signup handler
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    // Check if user already exists
+    const { data: existing } = await supabase
+      .from('adminCredentials')
+      .select('id')
+      .eq('email', credentials.email)
+      .single();
+
+    if (existing) {
+      setIsLoading(false);
+      setError('An account with this email already exists.');
+      return;
+    }
+
+    // Insert new admin
+    const { error: insertError } = await supabase
+      .from('adminCredentials')
+      .insert([
+        {
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password // In production, hash this!
+        }
+      ]);
+
+    setIsLoading(false);
+
+    if (insertError) {
+      setError('Failed to create account. Please try again.');
+      console.error(insertError); 
     } else {
-      setTimeout(() => {
-        setIsLoading(false);
-        setError('Invalid username or password. Please try again.');
-      }, 1000);
+      setMode('login');
+      setError('');
+      setCredentials({ name: '', email: '', password: '' });
+      alert('Account created! Please log in.');
     }
   };
 
@@ -52,16 +111,22 @@ export default function AdminLoginPage() {
             />
             <h1 className="text-3xl font-['Pacifico'] text-green-700 mb-2">Tapps Broilers</h1>
           </Link>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h2>
-          <p className="text-gray-600">Access your order management dashboard</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {mode === 'login' ? 'Admin Login' : 'Admin Sign Up'}
+          </h2>
+          <p className="text-gray-600">
+            {mode === 'login'
+              ? 'Access your order management dashboard'
+              : 'Create an admin account to manage orders'}
+          </p>
         </div>
 
-        {/* Login Form */}
+        {/* Login/Signup Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <form onSubmit={handleLogin} className="space-y-6">
+          <form onSubmit={mode === 'login' ? handleLogin : handleSignup} className="space-y-6">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Username
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -69,12 +134,34 @@ export default function AdminLoginPage() {
                 </div>
                 <input
                   type="text"
-                  id="username"
+                  id="name"
                   required
-                  value={credentials.username}
-                  onChange={(e) => setCredentials({...credentials, username: e.target.value})}
+                  autoComplete="username"
+                  value={credentials.name}
+                  onChange={(e) => setCredentials({ ...credentials, name: e.target.value })}
                   className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-                  placeholder="Enter your username"
+                  placeholder="Enter your name"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <i className="ri-mail-line text-gray-400"></i>
+                </div>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  autoComplete="email"
+                  value={credentials.email}
+                  onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                  placeholder="Enter your email"
                 />
               </div>
             </div>
@@ -88,14 +175,24 @@ export default function AdminLoginPage() {
                   <i className="ri-lock-2-line text-gray-400"></i>
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   required
+                  autoComplete="current-password"
                   value={credentials.password}
-                  onChange={(e) => setCredentials({...credentials, password: e.target.value})}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                  onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                  className="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                   placeholder="Enter your password"
                 />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  <i className={showPassword ? 'ri-eye-off-line' : 'ri-eye-line'}></i>
+                </button>
               </div>
             </div>
 
@@ -116,25 +213,50 @@ export default function AdminLoginPage() {
               {isLoading ? (
                 <div className="flex items-center justify-center space-x-2">
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Signing in...</span>
+                  <span>{mode === 'login' ? 'Signing in...' : 'Creating account...'}</span>
                 </div>
               ) : (
-                'Sign In'
+                mode === 'login' ? 'Sign In' : 'Sign Up'
               )}
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-xl">
-            <p className="text-xs text-gray-600 mb-2">Demo Credentials:</p>
-            <p className="text-xs text-gray-700 font-mono">Username: admin</p>
-            <p className="text-xs text-gray-700 font-mono">Password: tapps2024</p>
+          <div className="mt-6 text-center text-sm">
+            {mode === 'login' ? (
+              <>
+                Don't have an account?{' '}
+                <button
+                  type="button"
+                  className="text-green-600 hover:underline font-medium"
+                  onClick={() => {
+                    setMode('signup');
+                    setError('');
+                  }}
+                >
+                  Sign Up
+                </button>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  className="text-green-600 hover:underline font-medium"
+                  onClick={() => {
+                    setMode('login');
+                    setError('');
+                  }}
+                >
+                  Sign In
+                </button>
+              </>
+            )}
           </div>
         </div>
 
         {/* Back to Website */}
         <div className="text-center mt-8">
-          <Link 
+          <Link
             href="/"
             className="text-green-600 hover:text-green-700 font-medium cursor-pointer"
           >

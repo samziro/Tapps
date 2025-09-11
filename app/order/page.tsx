@@ -1,8 +1,14 @@
-
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { createClient } from '@supabase/supabase-js';
+
+// Use environment variables for your Supabase credentials
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function OrderPage() {
   const [selectedProduct, setSelectedProduct] = useState('whole');
@@ -39,21 +45,22 @@ export default function OrderPage() {
     return String(Date.now()).slice(-6);
   };
 
-  const saveOrderToStorage = (orderData: any) => {
-    const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    const newOrders = [orderData, ...existingOrders];
-    localStorage.setItem('orders', JSON.stringify(newOrders));
+  // Save order to Supabase
+  const saveOrderToSupabase = async (orderData: any) => {
+    const { error } = await supabase.from('orders').insert([orderData]);
+    return error;
   };
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const newOrderId = generateOrderId();
+    const newOrderId = Date.now(); // Use a number for id
+
     const orderData = {
       id: newOrderId,
       customerName: customerInfo.name,
-      phone: customerInfo.phone,
+      phone: Number(customerInfo.phone.replace(/\D/g, '')), // only digits
       location: customerInfo.location,
       product: selectedProductData?.name,
       quantity: quantity,
@@ -65,13 +72,16 @@ export default function OrderPage() {
       notificationSent: false
     };
 
-    // Simulate order processing
-    setTimeout(() => {
-      saveOrderToStorage(orderData);
-      setOrderId(newOrderId);
+    const error = await saveOrderToSupabase(orderData);
+    setIsSubmitting(false);
+
+    if (!error) {
+      setOrderId(String(newOrderId));
       setOrderSubmitted(true);
-      setIsSubmitting(false);
-    }, 2000);
+    } else {
+      alert('Failed to submit order. Please try again.');
+      console.error(error); //  for debugging
+    }
   };
 
   if (orderSubmitted) {
@@ -91,7 +101,7 @@ export default function OrderPage() {
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <h3 className="font-semibold mb-2">Order Summary:</h3>
               <p className="text-sm text-gray-600 mb-2">Order ID: #{orderId}</p>
-              <p>{quantity}x {selectedProductData?.name} - KSh {totalAmount}</p>
+              <p className='text-bold'>{quantity}x {selectedProductData?.name} - KSh {totalAmount}</p>
               <p className="text-sm text-gray-600">Payment: {paymentMethod === 'cash' ? 'Cash on Delivery' : 'M-Pesa'}</p>
             </div>
             <Link href="/" className="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors whitespace-nowrap cursor-pointer">
