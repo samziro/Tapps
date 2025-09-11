@@ -221,7 +221,7 @@ export default function AdminOrdersPage() {
     <AuthGuard>
       <div className="min-h-dvh bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:justify-between items-center mb-8">
+          <div className="flex flex-col md:justify-between md:items-center mb-8">
             <div>
               <h1 className="text-xl md:text-3xl md:text-center font-bold text-gray-900">Order Management</h1>
               <p className="text-gray-600 mt-2">Manage and track all customer orders - Updates in real-time</p>
