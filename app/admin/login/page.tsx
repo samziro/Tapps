@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function AdminLoginPage() {
   const [credentials, setCredentials] = useState({
@@ -42,6 +43,13 @@ export default function AdminLoginPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
+            <Image
+              src="/favicon.png"
+              alt="Tapps Broilers Logo"
+              width={80}
+              height={80}
+              className="mx-auto mb-2 rounded-full"
+            />
             <h1 className="text-3xl font-['Pacifico'] text-green-700 mb-2">Tapps Broilers</h1>
           </Link>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h2>
