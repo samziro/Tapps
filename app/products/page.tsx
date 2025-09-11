@@ -4,37 +4,27 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ProductsPage() {
   const products = [
     {
       id: 1,
-      name: "Whole Fresh Broiler",
-      description: "Complete broiler, perfectly cleaned and ready for cooking. Average weight 2-3 kg.",
+      name: "Whole Fresh Broiler Dressed",
+      description: "Complete broiler, perfectly cleaned and ready for cooking. Average weight 1.2-1.8 kg.",
       price: 500,
-      image: "Premium whole fresh broiler chicken on white background, clean and professionally presented, commercial food photography with natural lighting, high quality poultry product for retail display"
+      image: "/dressed.jpg",
+      alt: "Premium whole fresh broiler chicken on white background, clean and professionally presented, commercial food photography with natural lighting, high quality poultry product for retail display"
     },
     {
-      id: 2,
-      name: "Broiler Cuts - Mixed",
-      description: "Assorted premium cuts including breast, thighs, wings, and drumsticks.",
-      price: 550,
-      image: "Fresh broiler chicken cuts mixed pieces including breast thighs wings drumsticks on white background, premium poultry cuts professionally arranged, commercial food photography"
+      id: 1,
+      name: "Whole Fresh Broiler Live",
+      description: "Complete broiler and healthy Average weight 1.2-1.8 kg.",
+      price: 500,
+      image: "/live.jpg",
+      alt: "Premium whole fresh broiler chicken on white background, clean and professionally presented, commercial food photography with natural lighting, high quality poultry product for retail display"
     },
-    {
-      id: 3,
-      name: "Broiler Breast",
-      description: "Premium boneless broiler breast meat, perfect for grilling and roasting.",
-      price: 650,
-      image: "Fresh boneless broiler chicken breast meat on white background, premium quality poultry cuts, clean commercial food photography with natural lighting"
-    },
-    {
-      id: 4,
-      name: "Broiler Thighs & Drumsticks",
-      description: "Tender and juicy thighs and drumsticks, great for family meals.",
-      price: 480,
-      image: "Fresh broiler chicken thighs and drumsticks on white background, premium quality poultry pieces, commercial food photography with natural lighting"
-    }
+    
   ];
 
   return (
@@ -70,8 +60,10 @@ export default function ProductsPage() {
             {products.map((product) => (
               <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="aspect-square">
-                  <img 
-                    src={`https://readdy.ai/api/search-image?query=$%7Bproduct.image%7D&width=400&height=400&seq=product-${product.id}&orientation=squarish`}
+                  <Image
+                    width={400}
+                    height={400} 
+                    src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover object-top"
                   />
