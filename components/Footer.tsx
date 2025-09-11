@@ -1,6 +1,7 @@
 
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -9,10 +10,14 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
-                <i className="ri-leaf-line text-white text-xl"></i>
-              </div>
+            <div className="flex items-center mb-4">
+              <Image
+                src="/favicon.png"
+                alt="Tapps Broilers Logo"
+                width={100}
+                height={100}
+                className="rounded-full"
+              />
               <div>
                 <h3 className="font-['Pacifico'] text-xl text-green-400">Tapps Broilers</h3>
                 <p className="text-xs text-gray-400">Fresh from our farm to your table</p>

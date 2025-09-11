@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Pacifico } from "next/font/google";
+import { Pacifico, Outfit } from "next/font/google";
 import "./globals.css";
 
 // Fonts
@@ -10,36 +10,17 @@ const pacifico = Pacifico({
   variable: "--font-pacifico",
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const outfit = Outfit({ 
+  subsets: ["latin"], 
+  weight: ["400", "500", "600"],
+  variable: "--font-outfit",
 });
 
 // Metadata for SEO & social sharing
 export const metadata: Metadata = {
-
   title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu | Broilers Watamu",
-
   description:
     "Tapps Broilers Enterprise delivers fresh, farm-raised broiler chickens in Watamu, Kenya. Hygienic, healthy, and affordable broilers direct from the farm.",
-  keywords: [
-    "Tapps Broilers",
-    "Broilers Watamu",
-    "Broiler Chicken Watamu",
-    "Watamu Broilers",
-    "Broiler for sell in Watamu",
-    "Broilers Enterprise",
-    "Fresh Broilers Watamu",
-    "Fresh broiler chicken Kenya",
-    "Farm-raised chicken Watamu",
-    "Affordable broilers Watamu",
-
-  ],
   authors: [{ name: "Tapps Broilers Enterprise" }],
   openGraph: {
     title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu",
@@ -49,9 +30,7 @@ export const metadata: Metadata = {
     siteName: "Tapps Broilers Enterprise",
     images: [
       {
-
-        url: "/broilers_close_up.jpg", 
-
+        url: "/broilers_close_up.jpg",
         width: 1200,
         height: 630,
         alt: "Fresh broilers from Tapps Broilers Enterprise",
@@ -66,9 +45,7 @@ export const metadata: Metadata = {
     description:
       "Order fresh broiler chicken in Watamu from Tapps Broilers Enterprise. Farm-raised, hygienic, and affordable.",
     creator: "@tappsbroilers",
-    images: ["/close_up.jpg"],
-
-
+    images: ["/broilers_close_up.jpg"],
   },
 };
 
@@ -82,13 +59,15 @@ export default function RootLayout({
       <head>
         {/* Mobile friendly */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {/* Favicon (place favicon.ico or logo.png in /public) */}
-
+        {/* Favicon */}
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/logo.png" />
         <link rel="manifest" href="/site.webmanifest" />
-
+        {/* Meta keywords for SEO */}
+        <meta
+          name="keywords"
+          content="Tapps Broilers, Broilers Watamu, Broiler Chicken Watamu, Watamu Broilers, Broiler for sell in Watamu, Broilers Enterprise, Fresh Broilers Watamu, Fresh broiler chicken Kenya, Farm-raised chicken Watamu, Affordable broilers Watamu"
+        />
         {/* Schema.org JSON-LD for Local Business */}
         <script
           type="application/ld+json"
@@ -109,7 +88,6 @@ export default function RootLayout({
                 postalCode: "80202",
                 addressCountry: "KE",
               },
-
               image: "/logo.jpg",
               priceRange: "KSh 500 per broiler",
               sameAs: [
@@ -117,22 +95,18 @@ export default function RootLayout({
                 "https://www.instagram.com/tappsbroilers",
                 "https://twitter.com/tappsbroilers",
               ],
-
             }),
           }}
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}
+        className={`${outfit.className} ${pacifico.variable} antialiased`}
       >
         <header>
           {/* Hidden heading for accessibility */}
           <h1 className="sr-only">Tapps Broilers Enterprise</h1>
         </header>
-
         <main>{children}</main>
-
-        
       </body>
     </html>
   );
