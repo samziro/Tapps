@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -96,65 +95,23 @@ export default function AdminOrdersPage() {
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
+    // Reload orders when window/tab regains focus
+    const handleFocus = () => {
+      loadOrders();
+    };
 
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('focus', handleFocus);
+
+    // Optional: Keep the interval for polling as a fallback
     const interval = setInterval(loadOrders, 2000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('focus', handleFocus);
       clearInterval(interval);
     };
   }, []);
-
-  const handleSendNotification = async (orderId: string, phone: string, customerName: string) => {
-    setSendingNotification(orderId);
-
-    setTimeout(() => {
-      const currentTime = new Date().toISOString();
-      const notificationMessage = `Hi ${customerName}, your order #${orderId} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`;
-
-      const updatedOrders = orders.map((order) =>
-        order.id === orderId
-          ? {
-              ...order,
-              notificationSent: true,
-              status: 'processing' as const,
-              notifications: [
-                ...(order.notifications || []),
-                {
-                  message: notificationMessage,
-                  timestamp: currentTime,
-                  type: 'info' as const,
-                },
-              ],
-            }
-          : order
-      );
-      setOrders(updatedOrders);
-
-      const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-      const updatedSavedOrders = savedOrders.map((order: any) =>
-        order.id === orderId
-          ? {
-              ...order,
-              notificationSent: true,
-              status: 'processing' as const,
-              notifications: [
-                ...(order.notifications || []),
-                {
-                  message: notificationMessage,
-                  timestamp: currentTime,
-                  type: 'info' as const,
-                },
-              ],
-            }
-          : order
-      );
-      localStorage.setItem('orders', JSON.stringify(updatedSavedOrders));
-
-      setSendingNotification(null);
-    }, 2000);
-  };
 
   const updateOrderStatus = (orderId: string, newStatus: 'pending' | 'processing' | 'delivered') => {
     const currentTime = new Date().toISOString();
@@ -209,6 +166,21 @@ export default function AdminOrdersPage() {
     localStorage.setItem('orders', JSON.stringify(updatedSavedOrders));
   };
 
+  // Helper to format phone number for WhatsApp (Kenya example)
+  const formatPhoneForWhatsApp = (phone: string) => {
+    // Remove spaces and dashes
+    let cleaned = phone.replace(/[\s-]/g, '');
+    // If starts with 0, replace with 254
+    if (cleaned.startsWith('0')) {
+      cleaned = '254' + cleaned.substring(1);
+    }
+    // Remove leading +
+    if (cleaned.startsWith('+')) {
+      cleaned = cleaned.substring(1);
+    }
+    return cleaned;
+  };
+
   const filteredOrders = filter === 'all' ? orders : orders.filter((order) => order.status === filter);
 
   const formatDate = (dateString: string) => {
@@ -249,9 +221,9 @@ export default function AdminOrdersPage() {
     <AuthGuard>
       <div className="min-h-dvh bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col md:justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Order Management</h1>
+              <h1 className="text-xl md:text-3xl md:text-center font-bold text-gray-900">Order Management</h1>
               <p className="text-gray-600 mt-2">Manage and track all customer orders - Updates in real-time</p>
             </div>
             <div className="flex flex-col md:flex-row space-x-4">
@@ -276,7 +248,7 @@ export default function AdminOrdersPage() {
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-1 md:space-x-3">
                 <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
                   <i className="ri-shopping-bag-3-line text-blue-600 text-xl"></i>
                 </div>
@@ -440,32 +412,44 @@ export default function AdminOrdersPage() {
                         <option value="delivered">Delivered</option>
                       </select>
 
-                      {/* Send Notification Button */}
-                      <button
-                        onClick={() => handleSendNotification(order.id, order.phone, order.customerName)}
-                        disabled={sendingNotification === order.id || order.notificationSent}
-                        className={`px-4 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
-                          order.notificationSent
-                            ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-                            : sendingNotification === order.id
-                            ? 'bg-blue-100 text-blue-600 cursor-not-allowed'
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}
-                      >
-                        {sendingNotification === order.id ? (
-                          <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                            <span>Sending...</span>
-                          </div>
-                        ) : order.notificationSent ? (
-                          'Notification Sent'
-                        ) : (
-                          <div className="flex items-center space-x-2">
-                            <i className="ri-message-3-line"></i>
-                            <span>Notify Customer</span>
-                          </div>
-                        )}
-                      </button>
+                      {/* Notify Customer Buttons */}
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => {
+                            const message = encodeURIComponent(
+                              `Hi ${order.customerName}, your order #${order.id} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`
+                            );
+                            const phone = formatPhoneForWhatsApp(order.phone);
+                            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+                          }}
+                          disabled={order.notificationSent}
+                          className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                            order.notificationSent
+                              ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                              : 'bg-green-600 text-white hover:bg-green-700'
+                          }`}
+                          title="Notify via WhatsApp"
+                        >
+                          <i className="ri-whatsapp-line mr-1"></i> WhatsApp
+                        </button>
+                        <button
+                          onClick={() => {
+                            const message = encodeURIComponent(
+                              `Hi ${order.customerName}, your order #${order.id} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`
+                            );
+                            window.open(`sms:${order.phone}?body=${message}`, '_blank');
+                          }}
+                          disabled={order.notificationSent}
+                          className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
+                            order.notificationSent
+                              ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
+                              : 'bg-blue-600 text-white hover:bg-blue-700'
+                          }`}
+                          title="Notify via SMS"
+                        >
+                          <i className="ri-message-3-line mr-1"></i> SMS
+                        </button>
+                      </div>
 
                       {/* Call Customer */}
                       <a
