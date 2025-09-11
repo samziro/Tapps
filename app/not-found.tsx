@@ -2,8 +2,14 @@ export default function NotFound() {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center px-4">
         <h1 className="text-5xl md:text-5xl font-semibold text-gray-100">404</h1>
-        <h1 className="text-2xl md:text-3xl font-semibold mt-6">This page has not been generated</h1>
-        <p className="mt-4 text-xl md:text-2xl text-gray-500">Tell me what you would like on this page</p>
+        
+        <p className="text-gray-500 mt-4">Please check the URL or return to the homepage.</p>
+        <a
+          href="/"
+          className="mt-6 inline-block bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors"
+        >
+          Go to Homepage
+        </a>
       </div>
     );
   }

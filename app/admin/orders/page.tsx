@@ -247,7 +247,7 @@ export default function AdminOrdersPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-dvh bg-gray-50 py-8">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center mb-8">
             <div>

@@ -77,7 +77,7 @@ export default function OrderPage() {
   if (orderSubmitted) {
     return (
 
-      <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+      <div className="min-h-dvh bg-gray-50 pt-24 pb-12">
 
         <div className="max-w-2xl mx-auto px-6">
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center">

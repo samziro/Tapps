@@ -12,7 +12,7 @@ export default function Home() {
       
       {/* Hero Section */}
       <section 
-        className="relative h-screen flex items-center justify-center text-white"
+        className="relative h-dvh flex items-center justify-center text-white"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/hero.jpg')`,
           backgroundSize: 'cover',
