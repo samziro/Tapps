@@ -244,16 +244,16 @@ export default function AdminOrdersPage() {
 
           {/* Filter Tabs */}
           <div className="bg-white rounded-2xl shadow-lg p-2 mb-6">
-            <div className="flex space-x-2">
+            <div className="flex space-x-3">
               {(['all', 'pending', 'processing', 'delivered'] as const).map((status) => (
                 <button
                   key={status}
                   onClick={() => setFilter(status)}
-                  className={`${filter === status ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'}px-2 py-1 rounded-lg md:px-6 md:py-2 md:rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer`}
+                  className={`${filter === status ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'} px-2 rounded-lg md:px-6 md:py-2 md:rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer`}
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                   {status !== 'all' && (
-                    <span className="ml-1 md:ml-2 text-sm">
+                    <span className="ml-1 md:ml-2 text-sm px-1 ">
                       ({status === 'pending' ? pendingOrders : status === 'processing' ? processingOrders : orders.filter((o) => o.status === 'delivered').length})
                     </span>
                   )}
