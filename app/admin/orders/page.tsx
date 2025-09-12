@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AuthGuard from '../../../components/AuthGuard';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 interface Order {
   id: string;
@@ -29,91 +35,40 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [sendingNotification, setSendingNotification] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'processing' | 'delivered'>('all');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const router = useRouter();
 
+  // Fetch orders from Supabase
   useEffect(() => {
-    const loadOrders = () => {
-      const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const loadOrders = async () => {
+      setLoading(true);
+      setError('');
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('orderDate', { ascending: false });
 
-      const mockOrders: Order[] = [
-        {
-          id: '001',
-          customerName: 'John Kamau',
-          phone: '0712345678',
-          location: 'Malindi Town, Coast',
-          product: 'Whole Broiler',
-          quantity: 3,
-          totalAmount: 1500,
-          paymentMethod: 'mpesa',
-          notes: 'Please deliver in the evening',
-          status: 'pending',
-          orderDate: new Date().toISOString(),
-          notificationSent: false,
-        },
-        {
-          id: '002',
-          customerName: 'Mary Wanjiku',
-          phone: '0723456789',
-          location: 'Watamu Beach Road',
-          product: 'Mixed Cuts',
-          quantity: 2,
-          totalAmount: 1000,
-          paymentMethod: 'cash',
-          notes: '',
-          status: 'processing',
-          orderDate: new Date(Date.now() - 86400000).toISOString(),
-          notificationSent: true,
-        },
-        {
-          id: '003',
-          customerName: 'David Mwangi',
-          phone: '0734567890',
-          location: 'Gede Ruins Area',
-          product: 'Breast Meat',
-          quantity: 4,
-          totalAmount: 2400,
-          paymentMethod: 'mpesa',
-          notes: 'Call before delivery',
-          status: 'pending',
-          orderDate: new Date(Date.now() - 43200000).toISOString(),
-          notificationSent: false,
-        },
-      ];
-
-      const existingIds = savedOrders.map((order: Order) => order.id);
-      const filteredMockOrders = mockOrders.filter((order) => !existingIds.includes(order.id));
-
-      const allOrders = [...savedOrders, ...filteredMockOrders];
-      setOrders(allOrders);
+      if (error) {
+        setError('Failed to fetch orders.');
+        setOrders([]);
+        setLoading(false);
+        return;
+      }
+      setOrders(data || []);
+      setLoading(false);
     };
 
     loadOrders();
 
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'orders') {
-        loadOrders();
-      }
-    };
+    // Optionally, poll for new orders every 10 seconds
+    const interval = setInterval(loadOrders, 10000);
 
-    // Reload orders when window/tab regains focus
-    const handleFocus = () => {
-      loadOrders();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('focus', handleFocus);
-
-    // Optional: Keep the interval for polling as a fallback
-    const interval = setInterval(loadOrders, 2000);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('focus', handleFocus);
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
-  const updateOrderStatus = (orderId: string, newStatus: 'pending' | 'processing' | 'delivered') => {
+  // Update order status in Supabase
+  const updateOrderStatus = async (orderId: string, newStatus: 'pending' | 'processing' | 'delivered') => {
     const currentTime = new Date().toISOString();
     let statusMessage = '';
 
@@ -128,53 +83,44 @@ export default function AdminOrdersPage() {
         statusMessage = 'Order status updated.';
     }
 
-    const updatedOrders = orders.map((order) =>
-      order.id === orderId
-        ? {
-            ...order,
-            status: newStatus,
-            notifications: [
-              ...(order.notifications || []),
-              {
-                message: statusMessage,
-                timestamp: currentTime,
-                type: newStatus === 'delivered' ? 'success' as const : 'info' as const,
-              },
-            ],
-          }
-        : order
-    );
-    setOrders(updatedOrders);
+    // Find the order to update notifications
+    const orderToUpdate = orders.find((order) => order.id === orderId);
+    const newNotifications = [
+      ...(orderToUpdate?.notifications || []),
+      {
+        message: statusMessage,
+        timestamp: currentTime,
+        type: newStatus === 'delivered' ? 'success' as const : 'info' as const,
+      },
+    ];
 
-    const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    const updatedSavedOrders = savedOrders.map((order: any) =>
-      order.id === orderId
-        ? {
-            ...order,
-            status: newStatus,
-            notifications: [
-              ...(order.notifications || []),
-              {
-                message: statusMessage,
-                timestamp: currentTime,
-                type: newStatus === 'delivered' ? 'success' as const : 'info' as const,
-              },
-            ],
-          }
-        : order
+    // Update in Supabase
+    const { error } = await supabase
+      .from('orders')
+      .update({ status: newStatus, notifications: newNotifications })
+      .eq('id', orderId);
+
+    if (error) {
+      setError('Failed to update order status.');
+      return;
+    }
+
+    // Update local state
+    setOrders((prev) =>
+      prev.map((order) =>
+        order.id === orderId
+          ? { ...order, status: newStatus, notifications: newNotifications }
+          : order
+      )
     );
-    localStorage.setItem('orders', JSON.stringify(updatedSavedOrders));
   };
 
   // Helper to format phone number for WhatsApp (Kenya example)
   const formatPhoneForWhatsApp = (phone: string) => {
-    // Remove spaces and dashes
     let cleaned = phone.replace(/[\s-]/g, '');
-    // If starts with 0, replace with 254
     if (cleaned.startsWith('0')) {
       cleaned = '254' + cleaned.substring(1);
     }
-    // Remove leading +
     if (cleaned.startsWith('+')) {
       cleaned = cleaned.substring(1);
     }
@@ -298,16 +244,16 @@ export default function AdminOrdersPage() {
 
           {/* Filter Tabs */}
           <div className="bg-white rounded-2xl shadow-lg p-2 mb-6">
-            <div className="flex md:space-x-2">
+            <div className="flex space-x-2">
               {(['all', 'pending', 'processing', 'delivered'] as const).map((status) => (
                 <button
                   key={status}
                   onClick={() => setFilter(status)}
-                  className={`${filter === status ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'} md:px-6 py-2 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer`}
+                  className={`${filter === status ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'}px-2 py-1 rounded-lg md:px-6 md:py-2 md:rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer`}
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                   {status !== 'all' && (
-                    <span className="md:ml-2 text-sm">
+                    <span className="ml-1 md:ml-2 text-sm">
                       ({status === 'pending' ? pendingOrders : status === 'processing' ? processingOrders : orders.filter((o) => o.status === 'delivered').length})
                     </span>
                   )}
@@ -316,8 +262,25 @@ export default function AdminOrdersPage() {
             </div>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+              <div className="flex items-center space-x-2">
+                <i className="ri-error-warning-line text-red-500"></i>
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Loading Spinner */}
+          {loading && (
+            <div className="flex justify-center items-center py-12">
+              <div className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          )}
+
           {/* New Order Alert */}
-          {orders.some((order) => order.status === 'pending' && !order.notificationSent) && (
+          {!loading && orders.some((order) => order.status === 'pending' && !order.notificationSent) && (
             <div className="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-4 mb-6">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
@@ -335,7 +298,7 @@ export default function AdminOrdersPage() {
 
           {/* Orders List */}
           <div className="space-y-4">
-            {filteredOrders.length === 0 ? (
+            {!loading && filteredOrders.length === 0 ? (
               <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <i className="ri-inbox-line text-gray-400 text-2xl"></i>
