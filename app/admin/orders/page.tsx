@@ -249,11 +249,11 @@ export default function AdminOrdersPage() {
                 <button
                   key={status}
                   onClick={() => setFilter(status)}
-                  className={`${filter === status ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'} px-2 rounded-lg md:px-6 md:py-2 md:rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer`}
+                  className={`${filter === status ? 'bg-green-600 text-white' : 'text-gray-600 hover:bg-gray-100'} px-1 rounded-lg md:px-6 md:py-2 md:rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer`}
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                   {status !== 'all' && (
-                    <span className="ml-1 md:ml-2 text-sm px-1 ">
+                    <span className="ml-.5 md:ml-2 text-sm px-1 ">
                       ({status === 'pending' ? pendingOrders : status === 'processing' ? processingOrders : orders.filter((o) => o.status === 'delivered').length})
                     </span>
                   )}
