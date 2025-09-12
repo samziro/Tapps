@@ -244,7 +244,7 @@ export default function AdminOrdersPage() {
 
           {/* Filter Tabs */}
           <div className="bg-white rounded-2xl shadow-lg p-2 mb-6">
-            <div className="flex space-x-1 md:space-x-3">
+            <div className="flex space-x-2 md:space-x-3">
               {(['all', 'pending', 'processing', 'delivered'] as const).map((status) => (
                 <button
                   key={status}
@@ -253,7 +253,7 @@ export default function AdminOrdersPage() {
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                   {status !== 'all' && (
-                    <span className="ml-.5 md:ml-2 text-sm pl-.5 ">
+                    <span className="ml-1 md:ml-2 text-sm pl-1 ">
                       ({status === 'pending' ? pendingOrders : status === 'processing' ? processingOrders : orders.filter((o) => o.status === 'delivered').length})
                     </span>
                   )}
