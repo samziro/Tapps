@@ -24,22 +24,33 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  // Helper: trim all credentials
+  const trimmedCredentials = {
+    name: credentials.name.trim(),
+    email: credentials.email.trim().toLowerCase(),
+    password: credentials.password.trim()
+  };
+
   // Login handler
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
-    const name = credentials.name.trim();
-    const email = credentials.email.trim();
-    const password = credentials.password.trim();
+    // Check for empty fields
+    if (!trimmedCredentials.name || !trimmedCredentials.email || !trimmedCredentials.password) {
+      setError('All fields are required.');
+      setIsLoading(false);
+      return;
+    }
 
+    // Query Supabase for admin credentials
     const { data, error: supabaseError } = await supabase
       .from('adminCredentials')
       .select('*')
-      .eq('name', name)
-      .eq('email', email)
-      .eq('password', password)
+      .eq('name', trimmedCredentials.name)
+      .eq('email', trimmedCredentials.email)
+      .eq('password', trimmedCredentials.password)
       .single();
 
     setIsLoading(false);
@@ -59,12 +70,26 @@ export default function AdminLoginPage() {
     setIsLoading(true);
     setError('');
 
-    // Check if user already exists
-    const { data: existing } = await supabase
+    // Check for empty fields
+    if (!trimmedCredentials.name || !trimmedCredentials.email || !trimmedCredentials.password) {
+      setError('All fields are required.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Check if user already exists (by email)
+    const { data: existing, error: checkError } = await supabase
       .from('adminCredentials')
       .select('id')
-      .eq('email', credentials.email)
+      .eq('email', trimmedCredentials.email)
       .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      // Not found is fine, but other errors should be shown
+      setIsLoading(false);
+      setError('Error checking existing account. Please try again.');
+      return;
+    }
 
     if (existing) {
       setIsLoading(false);
@@ -77,9 +102,9 @@ export default function AdminLoginPage() {
       .from('adminCredentials')
       .insert([
         {
-          name: credentials.name,
-          email: credentials.email,
-          password: credentials.password // In production, hash this!
+          name: trimmedCredentials.name,
+          email: trimmedCredentials.email,
+          password: trimmedCredentials.password // In production, hash this!
         }
       ]);
 
@@ -87,7 +112,7 @@ export default function AdminLoginPage() {
 
     if (insertError) {
       setError('Failed to create account. Please try again.');
-      console.error(insertError); 
+      console.error(insertError);
     } else {
       setMode('login');
       setError('');
@@ -186,7 +211,6 @@ export default function AdminLoginPage() {
                 />
                 <button
                   type="button"
-                 
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}

@@ -367,34 +367,34 @@ export default function AdminOrdersPage() {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                          <p className="text-sm text-gray-600">Customer</p>
-                          <p className="font-semibold">{order.customerName}</p>
-                          <p className="text-sm text-gray-600">{order.phone}</p>
+                          <p className="font-semibold">Customer</p>
+                          <p className="text-sm text-gray-600">{order.customerName}</p>
+                          <p className=" text-sm text-gray-600">{order.phone}</p>
                         </div>
 
                         <div>
-                          <p className="text-sm text-gray-600">Product & Quantity</p>
-                          <p className="font-semibold">{order.quantity}x {order.product}</p>
+                          <p className="font-semibold">Product & Quantity</p>
+                          <p className="text-sm text-gray-600 ">{order.quantity} x {order.product}</p>
                           <p className="text-sm text-green-600 font-medium">KSh {order.totalAmount}</p>
                         </div>
 
                         <div>
-                          <p className="text-sm text-gray-600">Delivery Location</p>
-                          <p className="font-semibold">{order.location}</p>
+                          <p className="font-semibold">Delivery Location</p>
+                          <p className="text-sm text-gray-600 ">{order.location}</p>
                           <p className="text-sm text-gray-600">
                             {order.paymentMethod === 'cash' ? 'Cash on Delivery' : 'M-Pesa'}
                           </p>
                         </div>
 
                         <div>
-                          <p className="text-sm text-gray-600">Order Date</p>
-                          <p className="font-semibold">{formatDate(order.orderDate)}</p>
+                          <p className="font-semibold">Order Date</p>
+                          <p className="text-sm text-gray-600">{formatDate(order.orderDate)}</p>
                         </div>
 
                         {order.notes && (
                           <div className="md:col-span-2">
-                            <p className="text-sm text-gray-600">Special Instructions</p>
-                            <p className="font-semibold">{order.notes}</p>
+                            <p className=" font-semibold">Special Instructions</p>
+                            <p className="text-sm text-gray-600">{order.notes}</p>
                           </div>
                         )}
                       </div>
