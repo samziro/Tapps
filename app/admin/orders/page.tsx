@@ -117,7 +117,7 @@ export default function AdminOrdersPage() {
 
   // Helper to format phone number for WhatsApp (Kenya example)
   const formatPhoneForWhatsApp = (phone: string) => {
-    let cleaned = phone.replace(/[\s-]/g, '');
+    let cleaned = String(phone).replace(/[\s-]/g, '');
     if (cleaned.startsWith('0')) {
       cleaned = '254' + cleaned.substring(1);
     }
@@ -385,7 +385,7 @@ export default function AdminOrdersPage() {
                             );
                             const phone = formatPhoneForWhatsApp(order.phone);
                             // Use window.location.href for better mobile support
-                            window.location.href = `https://wa.me/${phone}?text=${message}`;
+                            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
                           }}
                           disabled={order.notificationSent}
                           className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
