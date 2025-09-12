@@ -186,7 +186,9 @@ export default function AdminLoginPage() {
                 />
                 <button
                   type="button"
-                  tabIndex={-1}
+                  tabIndex={devops@devops:~/workspace/Tapps$ 
+
+-1}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-700"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
