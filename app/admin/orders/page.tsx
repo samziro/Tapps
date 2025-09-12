@@ -378,12 +378,14 @@ export default function AdminOrdersPage() {
                       {/* Notify Customer Buttons */}
                       <div className="flex space-x-2">
                         <button
+                          type="button"
                           onClick={() => {
                             const message = encodeURIComponent(
                               `Hi ${order.customerName}, your order #${order.id} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`
                             );
                             const phone = formatPhoneForWhatsApp(order.phone);
-                            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+                            // Use window.location.href for better mobile support
+                            window.location.href = `https://wa.me/${phone}?text=${message}`;
                           }}
                           disabled={order.notificationSent}
                           className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
@@ -396,6 +398,7 @@ export default function AdminOrdersPage() {
                           <i className="ri-whatsapp-line mr-1"></i> WhatsApp
                         </button>
                         <button
+                          type="button"
                           onClick={() => {
                             const message = encodeURIComponent(
                               `Hi ${order.customerName}, your order #${order.id} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`
