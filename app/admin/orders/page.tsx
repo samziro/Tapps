@@ -244,7 +244,7 @@ export default function AdminOrdersPage() {
 
           {/* Filter Tabs */}
           <div className="bg-white rounded-2xl shadow-lg p-2 mb-6">
-            <div className="flex space-x-3">
+            <div className="flex space-x-1 md:space-x-3">
               {(['all', 'pending', 'processing', 'delivered'] as const).map((status) => (
                 <button
                   key={status}
