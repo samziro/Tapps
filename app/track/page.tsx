@@ -42,31 +42,33 @@ export default function TrackOrderPage() {
       const result = await res.json();
       setIsLoading(false);
       if (res.ok && result.order) {
-        // Add default notifications based on order status
         const foundOrder = result.order;
-        const notifications = [];
-        notifications.push({
-          message: `Order #${foundOrder.id} has been received and is being prepared.`,
-          timestamp: foundOrder.orderDate,
-          type: 'info' as const
-        });
-        if (foundOrder.status === 'processing' || foundOrder.status === 'delivered') {
+        let notifications = foundOrder.notifications;
+        if (!notifications || notifications.length === 0) {
+          notifications = [];
           notifications.push({
-            message: 'Your order is now being processed and prepared for delivery.',
-            timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+            message: `Order #${foundOrder.id} has been received and is being prepared.`,
+            timestamp: foundOrder.orderDate,
             type: 'info' as const
           });
-        }
-        if (foundOrder.status === 'delivered') {
-          notifications.push({
-            message: 'Your order has been delivered successfully. Thank you for choosing us!',
-            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-            type: 'success' as const
-          });
+          if (foundOrder.status === 'processing' || foundOrder.status === 'delivered') {
+            notifications.push({
+              message: 'Your order is now being processed and prepared for delivery.',
+              timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+              type: 'info' as const
+            });
+          }
+          if (foundOrder.status === 'delivered') {
+            notifications.push({
+              message: 'Your order has been delivered successfully. Thank you for choosing us!',
+              timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+              type: 'success' as const
+            });
+          }
         }
         setOrder({
           ...foundOrder,
-          notifications: foundOrder.notifications || notifications
+          notifications
         });
       } else {
         setError(result.error || 'Order not found. Please check your Order ID and phone number.');
