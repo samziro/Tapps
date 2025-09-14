@@ -114,7 +114,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <i className="ri-check-line text-green-600 text-xl"></i>
-                  <span className="text-lg">Average weight: 2-3 kg per broiler</span>
+                  <span className="text-lg">Average weight: 1.2 - 1.8 kg per broiler</span>
                 </div>
               </div>
               
