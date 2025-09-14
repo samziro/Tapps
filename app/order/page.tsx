@@ -2,13 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { createClient } from '@supabase/supabase-js';
-
-// Use environment variables for your Supabase credentials
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default function OrderPage() {
   const [selectedProduct, setSelectedProduct] = useState('whole');
@@ -25,7 +18,7 @@ export default function OrderPage() {
   const [orderId, setOrderId] = useState('');
 
   const products = [
-    { id: 'whole', name: 'Whole Broiler', price: 500, weight: '1.5-2kg' },
+    { id: 'whole', name: 'Whole Broiler', price: 500, weight: '1.2 - 1.8kg' },
     // { id: 'mixed', name: 'Mixed Cuts', price: 500, weight: '1kg pack' },
     // { id: 'breast', name: 'Breast Meat', price: 600, weight: '500g pack' },
     // { id: 'thighs', name: 'Thighs & Drumsticks', price: 400, weight: '500g pack' }
@@ -41,46 +34,40 @@ export default function OrderPage() {
     }));
   };
 
-  const generateOrderId = () => {
-    return String(Date.now()).slice(-6);
-  };
 
-  // Save order to Supabase
-  const saveOrderToSupabase = async (orderData: any) => {
-    const { error } = await supabase.from('orders').insert([orderData]);
-    return error;
-  };
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const newOrderId = Date.now(); // Use a number for id
-
     const orderData = {
-      id: newOrderId,
       customerName: customerInfo.name,
-      phone: Number(customerInfo.phone.replace(/\D/g, '')), // only digits
+      phone: customerInfo.phone.replace(/\D/g, ''),
       location: customerInfo.location,
       product: selectedProductData?.name,
       quantity: quantity,
       totalAmount: totalAmount,
       paymentMethod: paymentMethod,
-      notes: customerInfo.notes,
-      status: 'pending',
-      orderDate: new Date().toISOString(),
-      notificationSent: false
+      notes: customerInfo.notes
     };
 
-    const error = await saveOrderToSupabase(orderData);
-    setIsSubmitting(false);
-
-    if (!error) {
-      setOrderId(String(newOrderId));
-      setOrderSubmitted(true);
-    } else {
+    try {
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+      const result = await res.json();
+      setIsSubmitting(false);
+      if (res.ok && result.orderId) {
+        setOrderId(result.orderId);
+        setOrderSubmitted(true);
+      } else {
+        alert(result.error || 'Failed to submit order. Please try again.');
+      }
+    } catch (err) {
+      setIsSubmitting(false);
       alert('Failed to submit order. Please try again.');
-      console.error(error); //  for debugging
     }
   };
 

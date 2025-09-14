@@ -32,28 +32,24 @@ export default function TrackOrderPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleTrackOrder = (e: React.FormEvent) => {
+  const handleTrackOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
     setOrder(null);
-
-    const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    const foundOrder = savedOrders.find((o: Order) => 
-      o.id === orderId && o.phone === phone
-    );
-
-    setTimeout(() => {
-      if (foundOrder) {
+    try {
+      const res = await fetch(`/api/order?id=${orderId}&phone=${phone}`);
+      const result = await res.json();
+      setIsLoading(false);
+      if (res.ok && result.order) {
         // Add default notifications based on order status
+        const foundOrder = result.order;
         const notifications = [];
-        
         notifications.push({
           message: `Order #${foundOrder.id} has been received and is being prepared.`,
           timestamp: foundOrder.orderDate,
           type: 'info' as const
         });
-
         if (foundOrder.status === 'processing' || foundOrder.status === 'delivered') {
           notifications.push({
             message: 'Your order is now being processed and prepared for delivery.',
@@ -61,7 +57,6 @@ export default function TrackOrderPage() {
             type: 'info' as const
           });
         }
-
         if (foundOrder.status === 'delivered') {
           notifications.push({
             message: 'Your order has been delivered successfully. Thank you for choosing us!',
@@ -69,16 +64,17 @@ export default function TrackOrderPage() {
             type: 'success' as const
           });
         }
-
         setOrder({
           ...foundOrder,
           notifications: foundOrder.notifications || notifications
         });
       } else {
-        setError('Order not found. Please check your Order ID and phone number.');
+        setError(result.error || 'Order not found. Please check your Order ID and phone number.');
       }
+    } catch (err) {
       setIsLoading(false);
-    }, 1000);
+      setError('Order not found. Please check your Order ID and phone number.');
+    }
   };
 
   const getStatusColor = (status: string) => {
