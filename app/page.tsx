@@ -3,6 +3,7 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import { ReactNode } from 'react';
 
 
 const features = [
@@ -30,7 +31,13 @@ const productHighlights = [
   'Average weight: 1.2 - 1.8 kg per broiler',
 ];
 
-const CTAButton = ({ href, children, className = '' }) => (
+interface CTAButtonProps {
+  href: string
+  children: ReactNode
+  className?: string
+}
+
+const CTAButton: React.FC<CTAButtonProps> = ({ href, children, className = '' }) => (
   <Link href={href} className={`px-8 py-4 rounded-full text-lg font-semibold transition-colors whitespace-nowrap cursor-pointer ${className}`}>
     {children}
   </Link>
