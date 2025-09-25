@@ -10,22 +10,42 @@ const pacifico = Pacifico({
   variable: "--font-pacifico",
 });
 
-const outfit = Outfit({ 
-  subsets: ["latin"], 
-  weight: ["400", "500", "600"],
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-outfit",
 });
 
-// Metadata for SEO & social sharing
+// =============================
+// SEO Metadata
+// =============================
 export const metadata: Metadata = {
-  title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu | Broilers Watamu",
+  title:
+    "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi | Farm-to-Table Poultry Kenya",
   description:
-    "Tapps Broilers Enterprise delivers fresh, farm-raised broiler chickens in Watamu, Kenya. Hygienic, healthy, and affordable broilers direct from the farm.",
+    "Tapps Broilers Enterprise delivers farm-raised, hygienic, and affordable broiler chickens in Watamu and Malindi, Kenya. Fresh from our farm to your table.",
+  keywords: [
+    "Tapps Broilers",
+    "Broilers Watamu",
+    "Broilers Malindi",
+    "Broiler Chicken Watamu",
+    "Broiler Chicken Malindi",
+    "Buy Broiler Chicken Kenya",
+    "Fresh broilers Watamu",
+    "Fresh broilers Malindi",
+    "Farm-raised chicken Watamu",
+    "Farm-raised chicken Malindi",
+    "Affordable chicken Watamu",
+    "Affordable chicken Malindi",
+    "Poultry farm Watamu",
+    "Poultry farm Malindi",
+  ],
   authors: [{ name: "Tapps Broilers Enterprise" }],
   openGraph: {
-    title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu",
+    title:
+      "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi",
     description:
-      "Order hygienic, healthy, and affordable broiler chicken in Watamu. Direct farm-to-table delivery from Tapps Broilers Enterprise.",
+      "Order hygienic, healthy, and affordable broiler chickens delivered in Watamu and Malindi. Farm-to-table poultry from Tapps Broilers Enterprise.",
     url: "https://tapps-kappa.vercel.app",
     siteName: "Tapps Broilers Enterprise",
     images: [
@@ -41,14 +61,18 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tapps Broilers Enterprise",
+    title:
+      "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi",
     description:
-      "Order fresh broiler chicken in Watamu from Tapps Broilers Enterprise. Farm-raised, hygienic, and affordable.",
+      "Farm-raised, hygienic, and affordable broiler chicken. Available in Watamu and Malindi – order today from Tapps Broilers Enterprise.",
     creator: "@tappsbroilers",
     images: ["/broilers_close_up.jpg"],
   },
 };
 
+// =============================
+// Root Layout
+// =============================
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -59,16 +83,13 @@ export default function RootLayout({
       <head>
         {/* Mobile friendly */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Favicon */}
+
+        {/* Favicon & App Icons */}
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/logo.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        {/* Meta keywords for SEO */}
-        <meta
-          name="keywords"
-          content="Tapps Broilers, Broilers Watamu, Broiler Chicken Watamu, Watamu Broilers, Broiler for sell in Watamu, Broilers Enterprise, Fresh Broilers Watamu, Fresh broiler chicken Kenya, Farm-raised chicken Watamu, Affordable broilers Watamu"
-        />
-        {/* Schema.org JSON-LD for Local Business */}
+
+        {/* Structured Data: Local Business + Product */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -77,7 +98,7 @@ export default function RootLayout({
               "@type": "LocalBusiness",
               name: "Tapps Broilers Enterprise",
               description:
-                "Fresh, farm-raised broiler chickens delivered in Watamu, Kenya.",
+                "Fresh, farm-raised broiler chickens delivered in Watamu and Malindi, Kenya.",
               url: "https://tapps-kappa.vercel.app",
               telephone: "+254769751566",
               address: {
@@ -88,25 +109,45 @@ export default function RootLayout({
                 postalCode: "80202",
                 addressCountry: "KE",
               },
-              image: "/logo.jpg",
-              priceRange: "KSh 500 per broiler",
+              image: "/broilers_close_up.jpg",
+              priceRange: "KSh 500 - KSh 600",
               sameAs: [
                 "https://www.facebook.com/tappsbroilers",
                 "https://www.instagram.com/tappsbroilers",
                 "https://twitter.com/tappsbroilers",
               ],
+              makesOffer: {
+                "@type": "Offer",
+                itemOffered: {
+                  "@type": "Product",
+                  name: "Fresh Broiler Chicken",
+                  image: "/broilers_close_up.jpg",
+                  description:
+                    "Farm-raised, hygienic, and affordable broiler chickens in Watamu & Malindi.",
+                  brand: { "@type": "Brand", name: "Tapps Broilers Enterprise" },
+                  offers: {
+                    "@type": "Offer",
+                    priceCurrency: "KES",
+                    price: "500",
+                    availability: "https://schema.org/InStock",
+                  },
+                },
+              },
             }),
           }}
         />
       </head>
-      <body
-        className={`${outfit.className} ${pacifico.variable} antialiased`}
-      >
+      <body className={`${outfit.className} ${pacifico.variable} antialiased`}>
         <header>
-          {/* Hidden heading for accessibility */}
-          <h1 className="sr-only">Tapps Broilers Enterprise</h1>
+          {/* Hidden heading for accessibility & SEO */}
+          <h1 className="sr-only">
+            Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi
+          </h1>
         </header>
+
         <main>{children}</main>
+
+        
       </body>
     </html>
   );
