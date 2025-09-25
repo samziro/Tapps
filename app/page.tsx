@@ -3,6 +3,7 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ReactNode } from 'react';
 
 
@@ -45,7 +46,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({ href, children, className = '' })
 
 export default function Home() {
   return (
-    <div className="min-h-dhv">
+    <div className="min-h-dvh">
       <Header />
 
       {/* Hero Section */}
@@ -84,7 +85,7 @@ export default function Home() {
             <p className="text-xl text-gray-600">Experience the difference of farm-fresh quality</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, idx) => (
+            {features.map((feature) => (
               <div key={feature.title} className="bg-white p-8 rounded-2xl shadow-lg text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <i className={`${feature.icon} text-green-600 text-2xl`}></i>
@@ -106,7 +107,9 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <img
+              <Image
+                width={600}
+                height={500}
                 src="https://readdy.ai/api/search-image?query=High%20quality%20fresh%20broiler%20chicken%20meat%20cuts%20displayed%20professionally%20on%20clean%20white%20background%2C%20premium%20poultry%20products%20showcase%2C%20commercial%20food%20photography%20with%20natural%20lighting%2C%20fresh%20chicken%20pieces%20arranged%20beautifully%20for%20retail%20display&width=600&height=500&seq=product-showcase&orientation=landscape"
                 alt="Fresh Broiler Products"
                 className="rounded-2xl shadow-2xl object-cover object-top w-full h-96"
