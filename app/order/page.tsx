@@ -266,6 +266,12 @@ export default function OrderPage() {
                   maxLength={500}
                 ></textarea>
               </div>
+              <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                <div className="flex items-start space-x-3">
+                  <input id="agreeTerms" className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500" required type="checkbox" />
+                  <label htmlFor="agreeTerms" className="text-sm text-gray-700 cursor-pointer"><span className="font-medium">I agree to the payment terms:</span><br />I understand that cash payments are due upon delivery and orders cannot be cancelled once confirmed.</label>
+                  </div>
+                  </div>
             </div>
 
             {/* Order Summary */}
