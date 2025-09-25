@@ -9,6 +9,7 @@ import TeamSection from "./TeamSection";
 import QualityStandards from "./QualityStandards";
 import Title from "../../components/Title";
 import Location from "./Location";
+import Faqs from "./Faqs";
 
 export default function AboutPage() {
   return (
@@ -21,7 +22,7 @@ export default function AboutPage() {
       <WhyChooseUs />
       <QualityStandards />
       <TeamSection />
-      
+      <Faqs/>
       <Footer />
     </div>
   );
