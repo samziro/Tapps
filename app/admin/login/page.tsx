@@ -17,7 +17,7 @@ export default function AdminLoginPage() {
   const [credentials, setCredentials] = useState({
     name: '',
     email: '',
-    password: ''
+    
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
   // Helper: trim all credentials
   const trimmedCredentials = {
     name: credentials.name.trim(),
-    email: credentials.email.trim().toLowerCase(),
+    
     password: credentials.password.trim()
   };
 
@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
     setError('');
 
     // Check for empty fields
-    if (!trimmedCredentials.name || !trimmedCredentials.email || !trimmedCredentials.password) {
+    if (!trimmedCredentials.name || !trimmedCredentials.password) {
       setError('All fields are required.');
       setIsLoading(false);
       return;
@@ -49,14 +49,14 @@ export default function AdminLoginPage() {
       .from('adminCredentials')
       .select('*')
       .eq('name', trimmedCredentials.name)
-      .eq('email', trimmedCredentials.email)
+      
       .eq('password', trimmedCredentials.password)
       .single();
 
     setIsLoading(false);
 
     if (supabaseError || !data) {
-      setError('Invalid name, email, or password. Please try again.');
+      setError('Invalid name or password. Please try again.');
     } else {
       localStorage.setItem('adminAuth', 'true');
       localStorage.setItem('adminLoginTime', Date.now().toString());
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
     setError('');
 
     // Check for empty fields
-    if (!trimmedCredentials.name || !trimmedCredentials.email || !trimmedCredentials.password) {
+    if (!trimmedCredentials.name || !trimmedCredentials.password) {
       setError('All fields are required.');
       setIsLoading(false);
       return;
@@ -81,7 +81,7 @@ export default function AdminLoginPage() {
     const { data: existing, error: checkError } = await supabase
       .from('adminCredentials')
       .select('id')
-      .eq('email', trimmedCredentials.email)
+     
       .single();
 
     if (checkError && checkError.code !== 'PGRST116') {
@@ -103,7 +103,7 @@ export default function AdminLoginPage() {
       .insert([
         {
           name: trimmedCredentials.name,
-          email: trimmedCredentials.email,
+          
           password: trimmedCredentials.password // In production, hash this!
         }
       ]);
@@ -116,7 +116,7 @@ export default function AdminLoginPage() {
     } else {
       setMode('login');
       setError('');
-      setCredentials({ name: '', email: '', password: '' });
+      setCredentials({ name: '', password: '' });
       alert('Account created! Please log in.');
     }
   };
@@ -170,26 +170,7 @@ export default function AdminLoginPage() {
               </div>
             </div>
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <i className="ri-mail-line text-gray-400"></i>
-                </div>
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  autoComplete="email"
-                  value={credentials.email}
-                  onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
+            
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
