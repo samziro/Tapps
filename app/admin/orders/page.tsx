@@ -33,7 +33,6 @@ interface Order {
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [sendingNotification, setSendingNotification] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'processing' | 'delivered'>('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

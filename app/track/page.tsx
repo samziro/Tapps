@@ -99,8 +99,8 @@ export default function TrackOrderPage() {
             notifications: result.order.notifications ?? prev?.notifications ?? []
           }));
         }
-      } catch (err) {
-        // ignore transient network errors during polling
+      } catch (e) {
+        console.error(e);
       }
     };
 

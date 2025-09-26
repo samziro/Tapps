@@ -1,4 +1,3 @@
-
 'use client';
 
 export default function AboutHero() {
@@ -21,6 +20,7 @@ export default function AboutHero() {
         <div className="inline-block bg-green-600/20 backdrop-blur-sm border border-green-400/30 rounded-full px-8 py-3">
           <p className="font-['Pacifico'] text-green-300 text-lg">Fresh from our farm to your table</p>
         </div>
+        <p>We&apos;re committed to quality.</p>
       </div>
     </section>
   );
