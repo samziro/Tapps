@@ -3,7 +3,7 @@
 export default function AboutHero() {
   return (
     <section 
-      className="relative h-[70vh] flex items-center justify-center bg-cover bg-center"
+      className="relative h-[75dvh] flex items-center justify-center bg-cover bg-center"
       style={{
 
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bg.jpg')`
