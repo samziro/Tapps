@@ -17,6 +17,7 @@ export default function AdminLoginPage() {
   const [credentials, setCredentials] = useState({
     name: '',
     password: '',
+
     
   });
   const [isLoading, setIsLoading] = useState(false);
