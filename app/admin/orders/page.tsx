@@ -34,9 +34,55 @@ interface Order {
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState<'all' | 'pending' | 'processing' | 'delivered'>('all');
+  const [sendingNotificationId, setSendingNotificationId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
+
+  // send notification (opens app/link) then mark order as notified on server
+  const sendNotification = async (order: Order, channel: 'whatsapp' | 'sms') => {
+    if (sendingNotificationId) return;
+    setSendingNotificationId(order.id);
+    try {
+      const messageText = `Hi ${order.customerName}, your order #${order.id} is ${order.status}. Thank you for choosing Tapps Broilers!`;
+      const encoded = encodeURIComponent(messageText);
+      const phone = formatPhoneForWhatsApp(order.phone);
+
+      if (channel === 'whatsapp') {
+        window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
+      } else {
+        // sms body param; use both formats if needed but this usually works across devices
+        window.open(`sms:${order.phone}?body=${encoded}`, '_blank');
+      }
+
+      // mark notified on server
+      const res = await fetch('/api/admin/mark-notified', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ orderId: order.id }),
+      });
+
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        console.error('mark-notified failed', res.status, txt);
+        setError('Failed to mark order as notified.');
+      } else {
+        const json = await res.json().catch(() => ({}));
+        if (json?.ok && json.order) {
+          setOrders((prev) => prev.map((o) => (o.id === json.order.id ? { ...o, ...json.order } : o)));
+        } else {
+          // fallback: optimistically mark notified
+          setOrders((prev) => prev.map((o) => (o.id === order.id ? { ...o, notificationSent: true } : o)));
+        }
+      }
+    } catch (e) {
+      console.error('sendNotification error', e);
+      setError('Failed to send notification.');
+    } finally {
+      setSendingNotificationId(null);
+    }
+  };
 
   // Fetch orders from Supabase
   useEffect(() => {
@@ -371,17 +417,10 @@ export default function AdminOrdersPage() {
                       <div className="flex space-x-2">
                         <button
                           type="button"
-                          onClick={() => {
-                            const message = encodeURIComponent(
-                              `Hi ${order.customerName}, your order #${order.id} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`
-                            );
-                            const phone = formatPhoneForWhatsApp(order.phone);
-                            // Use window.location.href for better mobile support
-                            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
-                          }}
-                          disabled={order.notificationSent}
+                          onClick={() => sendNotification(order, 'whatsapp')}
+                          disabled={order.notificationSent || sendingNotificationId === order.id}
                           className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
-                            order.notificationSent
+                            order.notificationSent || sendingNotificationId === order.id
                               ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                               : 'bg-green-600 text-white hover:bg-green-700'
                           }`}
@@ -391,15 +430,10 @@ export default function AdminOrdersPage() {
                         </button>
                         <button
                           type="button"
-                          onClick={() => {
-                            const message = encodeURIComponent(
-                              `Hi ${order.customerName}, your order #${order.id} is now being processed and will be delivered soon. Thank you for choosing Tapps Broilers!`
-                            );
-                            window.open(`sms:${order.phone}?body=${message}`, '_blank');
-                          }}
-                          disabled={order.notificationSent}
+                          onClick={() => sendNotification(order, 'sms')}
+                          disabled={order.notificationSent || sendingNotificationId === order.id}
                           className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
-                            order.notificationSent
+                            order.notificationSent || sendingNotificationId === order.id
                               ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                               : 'bg-blue-600 text-white hover:bg-blue-700'
                           }`}
