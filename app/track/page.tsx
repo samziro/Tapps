@@ -79,6 +79,40 @@ export default function TrackOrderPage() {
     }
   };
 
+  // Poll for updates when an order has been found (every 5s)
+  useEffect(() => {
+    if (!order) return;
+    let mounted = true;
+    const pollInterval = 5000;
+    const id = String(order.id);
+    const doPoll = async () => {
+      try {
+        const res = await fetch(`/api/order?id=${encodeURIComponent(id)}&phone=${encodeURIComponent(phone)}`);
+        if (!res.ok) return;
+        const result = await res.json();
+        if (!mounted) return;
+        if (result.order) {
+          // Merge to keep any existing notifications if the API omits them
+          setOrder((prev) => ({
+            ...prev!,
+            ...result.order,
+            notifications: result.order.notifications ?? prev?.notifications ?? []
+          }));
+        }
+      } catch (err) {
+        // ignore transient network errors during polling
+      }
+    };
+
+    // initial immediate poll then interval
+    doPoll();
+    const interval = setInterval(doPoll, pollInterval);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, [order?.id, phone]);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';

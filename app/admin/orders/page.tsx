@@ -69,50 +69,37 @@ export default function AdminOrdersPage() {
 
   // Update order status in Supabase
   const updateOrderStatus = async (orderId: string, newStatus: 'pending' | 'processing' | 'delivered') => {
-    const currentTime = new Date().toISOString();
-    let statusMessage = '';
+    setError('');
+    try {
+      const res = await fetch('/api/admin/update-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ orderId, newStatus }),
+      });
 
-    switch (newStatus) {
-      case 'processing':
-        statusMessage = 'Your order is now being processed and prepared for delivery.';
-        break;
-      case 'delivered':
-        statusMessage = 'Your order has been delivered successfully. Thank you for choosing Tapps Broilers!';
-        break;
-      default:
-        statusMessage = 'Order status updated.';
+      // debug: log status and raw text if non-ok
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        console.error('update-order response status', res.status, 'text:', txt);
+        const json = (() => { try { return JSON.parse(txt || '{}'); } catch { return {}; } })();
+        setError(json?.message || `Update failed (status ${res.status})`);
+        return;
+      }
+
+      const json = await res.json();
+      if (!json?.ok) {
+        console.error('updateOrderStatus failed:', json);
+        setError(json?.message || 'Failed to update order.');
+        return;
+      }
+
+      const updated = json.order;
+      setOrders((prev) => prev.map((o) => (o.id === updated.id ? { ...o, ...updated } : o)));
+    } catch (err) {
+      console.error('updateOrderStatus error', err);
+      setError('Failed to update order.');
     }
-
-    // Find the order to update notifications
-    const orderToUpdate = orders.find((order) => order.id === orderId);
-    const newNotifications = [
-      ...(orderToUpdate?.notifications || []),
-      {
-        message: statusMessage,
-        timestamp: currentTime,
-        type: newStatus === 'delivered' ? 'success' as const : 'info' as const,
-      },
-    ];
-
-    // Update in Supabase
-    const { error } = await supabase
-      .from('orders')
-      .update({ status: newStatus, notifications: newNotifications })
-      .eq('id', orderId);
-
-    if (error) {
-      setError('Failed to update order status.');
-      return;
-    }
-
-    // Update local state
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === orderId
-          ? { ...order, status: newStatus, notifications: newNotifications }
-          : order
-      )
-    );
   };
 
   // Helper to format phone number for WhatsApp (Kenya example)
