@@ -70,14 +70,15 @@ export default function AdminOrdersPage() {
   const updateOrderStatus = async (orderId: string, newStatus: 'pending' | 'processing' | 'delivered') => {
     setError('');
     try {
+      const body = { orderId, newStatus };
+
       const res = await fetch('/api/admin/update-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ orderId, newStatus }),
+        credentials: 'include', // ensure httpOnly cookie is sent
+        body: JSON.stringify(body),
       });
 
-      // debug: log status and raw text if non-ok
       if (!res.ok) {
         const txt = await res.text().catch(() => '');
         console.error('update-order response status', res.status, 'text:', txt);
@@ -98,6 +99,17 @@ export default function AdminOrdersPage() {
     } catch (err) {
       console.error('updateOrderStatus error', err);
       setError('Failed to update order.');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      // call logout route that clears the httpOnly cookie on the server
+      await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      router.push('/admin/login');
     }
   };
 
@@ -142,12 +154,6 @@ export default function AdminOrdersPage() {
   const pendingOrders = orders.filter((o) => o.status === 'pending').length;
   const processingOrders = orders.filter((o) => o.status === 'processing').length;
   const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
-
-  const handleLogout = () => {
-    localStorage.removeItem('adminAuth');
-    localStorage.removeItem('adminLoginTime');
-    router.push('/admin/login');
-  };
 
   return (
     <AuthGuard>
