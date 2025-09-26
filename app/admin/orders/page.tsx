@@ -418,28 +418,29 @@ export default function AdminOrdersPage() {
                         <button
                           type="button"
                           onClick={() => sendNotification(order, 'whatsapp')}
-                          disabled={order.notificationSent || sendingNotificationId === order.id}
+                          disabled={order.status === 'delivered' || sendingNotificationId === order.id}
                           className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
-                            order.notificationSent || sendingNotificationId === order.id
+                            order.status === 'delivered' || sendingNotificationId === order.id
                               ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                               : 'bg-green-600 text-white hover:bg-green-700'
                           }`}
                           title="Notify via WhatsApp"
                         >
-                          <i className="ri-whatsapp-line mr-1"></i> WhatsApp
+                          {sendingNotificationId === order.id ? 'Sending...' : 'WhatsApp'}
                         </button>
+
                         <button
                           type="button"
                           onClick={() => sendNotification(order, 'sms')}
-                          disabled={order.notificationSent || sendingNotificationId === order.id}
+                          disabled={order.status === 'delivered' || sendingNotificationId === order.id}
                           className={`flex-1 px-2 py-2 rounded-xl font-medium transition-colors whitespace-nowrap cursor-pointer ${
-                            order.notificationSent || sendingNotificationId === order.id
+                            order.status === 'delivered' || sendingNotificationId === order.id
                               ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                               : 'bg-blue-600 text-white hover:bg-blue-700'
                           }`}
                           title="Notify via SMS"
                         >
-                          <i className="ri-message-3-line mr-1"></i> SMS
+                          {sendingNotificationId === order.id ? 'Sending...' : 'SMS'}
                         </button>
                       </div>
 
