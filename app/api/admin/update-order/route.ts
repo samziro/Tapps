@@ -13,9 +13,13 @@ export async function POST(request: Request) {
     const SUPABASE_SERVICE_ROLE_KEY =
       process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY;
 
-    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      console.error('Missing Supabase server keys for update-order route.');
-      return NextResponse.json({ ok: false, message: 'Server misconfigured' }, { status: 500 });
+    // improved diagnostic
+    const missing: string[] = [];
+    if (!SUPABASE_URL) missing.push('NEXT_PUBLIC_SUPABASE_URL');
+    if (!SUPABASE_SERVICE_ROLE_KEY) missing.push('SUPABASE_SERVICE_ROLE_KEY');
+    if (missing.length) {
+      console.error('update-order: missing env vars ->', missing.join(', '));
+      return NextResponse.json({ ok: false, message: `Server misconfigured: missing ${missing.join(', ')}` }, { status: 500 });
     }
 
     const raw = parseCookie(request.headers.get('cookie'), 'adminAuth');
@@ -32,7 +36,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, message: 'Missing orderId or newStatus' }, { status: 400 });
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
     // select known columns; use notificationStatus (jsonb) as in your DB
     const { data: currentOrder, error: fetchErr } = await supabase

@@ -96,7 +96,7 @@ export default function AdminLoginPage() {
 
     if (existing) {
       setIsLoading(false);
-      setError('An account with this email already exists.');
+      setError('Incorrect password or username.');
       return;
     }
 
