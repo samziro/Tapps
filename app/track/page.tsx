@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -73,7 +74,7 @@ export default function TrackOrderPage() {
       } else {
         setError(result.error || 'Order not found. Please check your Order ID and phone number.');
       }
-    } catch (err) {
+    } catch (e) {
       setIsLoading(false);
       setError('Order not found. Please check your Order ID and phone number.');
     }
@@ -111,7 +112,7 @@ export default function TrackOrderPage() {
       mounted = false;
       clearInterval(interval);
     };
-  }, [order?.id, phone]);
+  }, [order?.id, phone]); // include reactive deps
 
   const getStatusColor = (status: string) => {
     switch (status) {

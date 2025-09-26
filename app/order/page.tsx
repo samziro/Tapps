@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 
 import { useState } from 'react';
@@ -65,7 +66,8 @@ export default function OrderPage() {
       } else {
         alert(result.error || 'Failed to submit order. Please try again.');
       }
-    } catch (err) {
+    } catch (e) {
+      console.error(e);
       setIsSubmitting(false);
       alert('Failed to submit order. Please try again.');
     }
