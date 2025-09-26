@@ -80,13 +80,7 @@ const Location = () => {
               </div>
             </div>
           </div>
-          {/* <div className="bg-green-100 rounded-lg p-4 mt-4 flex items-center gap-2">
-            <span className="text-green-600">ℹ️</span>
-            <span>
-              <span className="font-semibold">Farm Visits</span><br />
-              Interested in seeing how we raise our broilers? Call us to schedule a farm tour and experience our quality standards firsthand.
-            </span>
-          </div> */}
+          
         </div>
       </section>
     )

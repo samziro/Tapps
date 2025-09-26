@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
-    // select known columns; use notificationStatus (jsonb) as in your DB
+    // select known columns; use notificationStatus (jsonb) as in the DB
     const { data: currentOrder, error: fetchErr } = await supabase
       .from('orders')
       .select('id, customerName, phone, location, product, quantity, totalAmount, paymentMethod, notes, status, orderDate, notificationSent, notificationStatus')

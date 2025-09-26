@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  // Generate a 6-digit order ID (not guaranteed unique, but short)
+  // Generate a 6-digit order ID 
   const orderId = Math.floor(100000 + Math.random() * 900000).toString();
   const orderData = {
     ...data,

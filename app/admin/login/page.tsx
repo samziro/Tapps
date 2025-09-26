@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
         {
           name: trimmedCredentials.name,
           
-          password: trimmedCredentials.password // In production, hash this!
+          password: trimmedCredentials.password // plaintext for now; hash in production
         }
       ]);
 
