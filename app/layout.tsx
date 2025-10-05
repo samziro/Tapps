@@ -137,6 +137,15 @@ export default function RootLayout({
           }}
         />
       </head>
+      <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B7FQ9Y3P1T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-B7FQ9Y3P1T');
+</script>
       <body className={`${outfit.className} ${pacifico.variable} antialiased`}>
         <header>
           {/* Hidden heading for accessibility & SEO */}
