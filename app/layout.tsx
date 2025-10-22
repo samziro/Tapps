@@ -145,14 +145,11 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_ID}', {
-              page_path: window.location.pathname
-            });
-          `}
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', '${GA_ID}');`}
         </Script>
       </head>
 
@@ -160,7 +157,7 @@ export default function RootLayout({
         <header>
           {/* Hidden heading for accessibility & SEO */}
           <h1 className="sr-only">
-            Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi
+            Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu
           </h1>
         </header>
 
