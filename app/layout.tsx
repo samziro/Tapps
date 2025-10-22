@@ -84,6 +84,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', '${GA_ID}');`}
+        </Script>
         {/* Mobile friendly */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -142,19 +154,6 @@ export default function RootLayout({
        
       </head>
 
-       {/* Google Analytics: use Next.js Script to avoid hydration/runtime issues */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
-
-          gtag('config', '${GA_ID}');`}
-        </Script>
-        
       <body className={`${outfit.className} ${pacifico.variable} antialiased`}>
         <header>
           {/* Hidden heading for accessibility & SEO */}
