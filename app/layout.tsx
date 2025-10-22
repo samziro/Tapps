@@ -139,7 +139,10 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Google Analytics: use Next.js Script to avoid hydration/runtime issues */}
+       
+      </head>
+
+       {/* Google Analytics: use Next.js Script to avoid hydration/runtime issues */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
           strategy="afterInteractive"
@@ -151,8 +154,7 @@ export default function RootLayout({
 
           gtag('config', '${GA_ID}');`}
         </Script>
-      </head>
-
+        
       <body className={`${outfit.className} ${pacifico.variable} antialiased`}>
         <header>
           {/* Hidden heading for accessibility & SEO */}
