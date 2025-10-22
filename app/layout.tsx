@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Pacifico, Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -19,9 +18,6 @@ const outfit = Outfit({
 
 const GA_ID = "G-B7FQ9Y3P1T"; // Google Analytics / Measurement ID
 
-// =============================
-// SEO Metadata
-// =============================
 export const metadata: Metadata = {
   title:
     "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu | Farm-to-Table Poultry Kenya",
@@ -30,25 +26,18 @@ export const metadata: Metadata = {
   keywords: [
     "Tapps Broilers",
     "Broilers Watamu",
-    
     "Broiler Chicken Watamu",
-    
     "Buy Broiler Chicken Kenya",
     "Fresh broilers Watamu",
-   
     "Farm-raised chicken Watamu",
-   
     "Affordable chicken Watamu",
-    
     "Poultry farm Watamu",
-    
   ],
   authors: [{ name: "Tapps Broilers Enterprise" }],
   openGraph: {
-    title:
-      "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu",
+    title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu",
     description:
-      "Order hygienic, healthy, and affordable broiler chickens delivered in Watamu and Malindi. Farm-to-table poultry from Tapps Broilers Enterprise.",
+      "Order hygienic, healthy, and affordable broiler chickens delivered in Watamu & Malindi. Farm-to-table poultry from Tapps Broilers Enterprise.",
     url: "https://tapps-kappa.vercel.app",
     siteName: "Tapps Broilers Enterprise",
     images: [
@@ -64,8 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi",
+    title: "Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu & Malindi",
     description:
       "Farm-raised, hygienic, and affordable broiler chicken. Available in Watamu and Malindi – order today from Tapps Broilers Enterprise.",
     creator: "@tappsbroilers",
@@ -73,9 +61,6 @@ export const metadata: Metadata = {
   },
 };
 
-// =============================
-// Root Layout
-// =============================
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -84,18 +69,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
-        {/* Google Analytics */}
-        <Script
+        {/* ===== Google tag ===== */}
+        <script
+          async
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          gtag('js', new Date());
+        ></script>
+        <script
+          // server-rendered initializer so detectors/crawlers see it in the HTML
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}', { page_path: window.location.pathname });
+            `,
+          }}
+        ></script>
 
-          gtag('config', '${GA_ID}');`}
-        </Script>
         {/* Mobile friendly */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -112,8 +102,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "Tapps Broilers Enterprise",
-              description:
-                "Fresh, farm-raised broiler chickens delivered in Watamu, Kenya.",
+              description: "Fresh, farm-raised broiler chickens delivered in Watamu, Kenya.",
               url: "https://tapps-kappa.vercel.app",
               telephone: "+254769751566",
               address: {
@@ -137,8 +126,7 @@ export default function RootLayout({
                   "@type": "Product",
                   name: "Fresh Broiler Chicken",
                   image: "/broilers_close_up.jpg",
-                  description:
-                    "Farm-raised, hygienic, and affordable broiler chickens in Watamu & Malindi.",
+                  description: "Farm-raised, hygienic, and affordable broiler chickens in Watamu & Malindi.",
                   brand: { "@type": "Brand", name: "Tapps Broilers Enterprise" },
                   offers: {
                     "@type": "Offer",
@@ -151,15 +139,11 @@ export default function RootLayout({
             }),
           }}
         />
-       
       </head>
 
       <body className={`${outfit.className} ${pacifico.variable} antialiased`}>
         <header>
-          {/* Hidden heading for accessibility & SEO */}
-          <h1 className="sr-only">
-            Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu
-          </h1>
+          <h1 className="sr-only">Tapps Broilers Enterprise | Fresh Broiler Chicken in Watamu</h1>
         </header>
 
         <main>{children}</main>
