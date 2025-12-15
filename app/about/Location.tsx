@@ -61,7 +61,7 @@ const Location = () => {
                     Farm Hours
                   </h5>
                   <p className="text-gray-600">
-                    Monday - Sunday: 6:00 AM - 6:00 PM
+                    Monday - Sunday: 6:00 AM - 8:00 PM
                   </p>
                 </div>
               </div>
