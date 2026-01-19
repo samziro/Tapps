@@ -2,6 +2,7 @@
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import WhoweServe from '../components/WhoweServe';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ReactNode } from 'react';
@@ -97,7 +98,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <WhoweServe/>
       {/* Product Showcase */}
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-6">
