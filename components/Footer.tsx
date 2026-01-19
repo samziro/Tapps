@@ -24,7 +24,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-300 text-sm">
-              Premium quality broilers raised with care in Watamu, Kenya. We ensure the freshest, healthiest birds for your family.
+              Tapps Broilers is a locally based broiler chicken supplier in Watamu, Kenya, providing fresh and hygienically processed chicken to hotels, restaurants, cafés, and households with fast and reliable delivery.
             </p>
           </div>
 
