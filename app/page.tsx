@@ -173,7 +173,8 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to Experience Farm Fresh Quality?</h2>
           <p className="text-xl mb-8">
-            Contact us today to place your order and taste the difference of genuine farm-fresh broilers.
+            Contact us today to place your order and taste the difference of genuine farm-fresh broilers. <br></br>
+            Supplying Broilers to Hotels, Restaurants, & Cafés in Watamu.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <CTAButton href="/order" className="bg-white text-green-600 hover:bg-gray-100">
