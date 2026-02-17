@@ -131,8 +131,8 @@ export default function AdminLoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-block">
             <Image
-              src="/favicon.png"
-              alt="Tapps Broilers Logo"
+              src="/favicon.webp"
+              alt="Tapps Broilers Logo - watamu fresh broilers"
               width={80}
               height={80}
               className="mx-auto mb-2 rounded-full"

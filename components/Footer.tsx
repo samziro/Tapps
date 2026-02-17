@@ -12,7 +12,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center mb-4">
               <Image
-                src="/favicon.png"
+                src="/favicon.webp"
                 alt="Tapps Broilers Logo"
                 width={100}
                 height={100}
@@ -92,7 +92,8 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2025 Tapps Broilers Enterprise. All rights reserved.</p>
+          <p>&copy; 2026 Tapps Broilers Enterprise. All rights reserved.</p>
+          <p>Designed by <span className='font-bold text-green-400'><a href="https://samuel-ziro.vercel.app">techforgenode</a></span></p>
         </div>
       </div>
     </footer>

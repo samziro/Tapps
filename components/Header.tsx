@@ -17,7 +17,7 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-3 cursor-pointer">
             <div className=" flex items-center justify-center">
               <Image
-                src="/logo.png"
+                src="/favicon.webp"
                 alt="Tapps Broilers Logo"
                 width={100}
                 height={100}

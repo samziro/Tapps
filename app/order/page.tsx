@@ -20,9 +20,7 @@ export default function OrderPage() {
 
   const products = [
     { id: 'whole', name: 'Whole Broiler', price: 500, weight: '1.2 - 1.8kg' },
-    // { id: 'mixed', name: 'Mixed Cuts', price: 500, weight: '1kg pack' },
-    // { id: 'breast', name: 'Breast Meat', price: 600, weight: '500g pack' },
-    // { id: 'thighs', name: 'Thighs & Drumsticks', price: 400, weight: '500g pack' }
+   
   ];
 
   const selectedProductData = products.find(p => p.id === selectedProduct);

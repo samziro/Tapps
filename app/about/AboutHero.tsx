@@ -7,7 +7,7 @@ export default function AboutHero() {
       className="relative h-[75dvh] flex items-center justify-center bg-cover bg-center"
       style={{
 
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bg.jpg')`
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/bg.webp')`
 
       }}
     >

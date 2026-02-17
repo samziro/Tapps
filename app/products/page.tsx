@@ -13,7 +13,7 @@ export default function ProductsPage() {
       name: "Whole Fresh Broiler Dressed",
       description: "Complete broiler, perfectly cleaned and ready for cooking. Average weight 1.2-1.8 kg.",
       price: 500,
-      image: "/dressed.jpg",
+      image: "/dressed.webp",
       alt: "Premium whole fresh broiler chicken on white background, clean and professionally presented, commercial food photography with natural lighting, high quality poultry product for retail display"
     },
     {
@@ -21,7 +21,7 @@ export default function ProductsPage() {
       name: "Whole Fresh Broiler Live",
       description: "Complete broiler and healthy Average weight 1.2-1.8 kg.",
       price: 500,
-      image: "/live.jpg",
+      image: "/live.webp",
       alt: "Premium whole fresh broiler chicken on white background, clean and professionally presented, commercial food photography with natural lighting, high quality poultry product for retail display"
     },
     

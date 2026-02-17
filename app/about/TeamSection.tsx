@@ -25,8 +25,8 @@ export default function TeamSection() {
             <Image
               width={800}
               height={800}
-              src="/team.jpg"
-              alt="Our Dedicated Team"
+              src="/team.webp"
+              alt="Our Dedicated Team - watamu broilers"
               className="w-full object-cover object-top rounded-2xl shadow-xl"
 
             />

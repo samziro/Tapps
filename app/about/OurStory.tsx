@@ -45,7 +45,7 @@ export default function OurStory() {
             <Image
               width={400}
               height={400}
-              src="/about.jpg"
+              src="/about.webp"
               alt="Our Farm Story"
               className="w-full object-cover object-top rounded-2xl shadow-xl"
 

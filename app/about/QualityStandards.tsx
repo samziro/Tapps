@@ -34,8 +34,8 @@ export default function QualityStandards() {
             <Image
               width={400}
               height={400}
-              src="/close_up.jpg"
-              alt="Quality Standards"
+              src="/close_up.webp"
+              alt="Quality Standards - watamu broilers"
               className="w-full object-cover object-top rounded-2xl shadow-xl"
 
             />

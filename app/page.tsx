@@ -54,7 +54,7 @@ export default function Home() {
       <section
         className="relative h-dvh flex items-center justify-center text-white"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/hero.jpg')`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/hero.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
