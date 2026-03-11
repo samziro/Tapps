@@ -31,7 +31,7 @@ export default function WhyChooseUs() {
     {
       icon: 'ri-customer-service-line',
       title: 'Personal Service',
-      description: 'Every customer receives personalized attention. Call us at 0769751566 for direct communication with our team.'
+      description: 'Every customer receives personalized attention. Call us at 0738823351 for direct communication with our team.'
     }
   ];
 
