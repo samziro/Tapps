@@ -141,8 +141,8 @@ export default function ProductsPage() {
             <Link href="/order" className="bg-white text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap cursor-pointer">
               Place Order Now
             </Link>
-            <a href="tel:0769751566" className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-green-600 transition-colors whitespace-nowrap cursor-pointer">
-              Call 0769751566
+            <a href="tel:0738823351" className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-green-600 transition-colors whitespace-nowrap cursor-pointer">
+              Call 0738823351
             </a>
           </div>
         </div>
