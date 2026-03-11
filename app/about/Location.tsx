@@ -49,7 +49,7 @@ const Location = () => {
                 </div>
                 <div>
                   <h5 className="font-semibold text-gray-900 mb-1">Contact</h5>
-                  <p className="text-gray-600">0769751566</p>
+                  <p className="text-gray-600">0738823351</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
