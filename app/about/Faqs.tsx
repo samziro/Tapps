@@ -15,9 +15,9 @@ const faqs: Faq[] = [
       'You can order directly from Tapps Broilers Enterprise in Jiwe-leupe, Watamu. We supply both live and dressed broilers with home and business delivery options.',
   },
   {
-    question: 'Do you deliver broiler chicken in watamu?',
+    question: 'Do you deliver broiler chicken in Watamu?',
     answer:
-      'Yes. We deliver in, Watamu, and surrounding areas. Delivery is agreed upon at ordering, and we serve families, hotels, restaurants, and butcheries.',
+      'Yes. We deliver in Watamu and the surrounding areas. Delivery is agreed upon at ordering, and we serve families, hotels, restaurants, and butcheries.',
   },
   {
     question: 'How much does a broiler chicken cost in Watamu?',
@@ -27,7 +27,7 @@ const faqs: Faq[] = [
   {
     question: 'How do I place an order?',
     answer:
-      'You can order through our Facebook page, website order form, or simply contact us via WhatsApp or phone (+254 769 751 566).',
+      'You can order through our Facebook page, website order form, or simply contact us via WhatsApp or phone (+254 823 351 566).',
   },
   {
     question: 'Is the chicken from Tapps Broilers hygienic and fresh?',
