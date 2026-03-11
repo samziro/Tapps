@@ -47,7 +47,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="tel:0769751566" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer">
+                <Link href="tel:0738823351" className="text-gray-300 hover:text-green-400 transition-colors cursor-pointer">
                   Contact
                 </Link>
               </li>
@@ -63,7 +63,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-2">
                 <i className="ri-phone-line text-green-400"></i>
-                <span className="text-gray-300">0769751566</span>
+                <span className="text-gray-300">0738823351</span>
               </div>
               <div className="flex items-center space-x-2">
                 <i className="ri-time-line text-green-400"></i>
