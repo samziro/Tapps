@@ -82,7 +82,7 @@ export default function TeamSection() {
             </div>
             <div className="mt-6 flex items-center justify-center space-x-2 text-green-100">
               <i className="ri-phone-line"></i>
-              <span>Call us at 0769751566</span>
+              <span>Call us at 0738823351</span>
             </div>
           </div>
         </div>
