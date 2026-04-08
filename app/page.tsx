@@ -132,7 +132,7 @@ export default function Home() {
                   <span className="text-gray-600">per broiler</span>
                 </div>
               </div>
-              <CTAButton href="/order" className="bg-green-600 text-white hover:bg-green-700 inline-block">
+              <CTAButton href="https://wa.me/254769751566" className="bg-green-600 text-white hover:bg-green-700 inline-block">
                 Order Now
               </CTAButton>
             </div>
